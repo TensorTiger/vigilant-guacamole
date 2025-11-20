@@ -1,7 +1,7 @@
 #!/bin/bash
 SSD_PATH=$(find /dev/ | grep google-local-nvme-ssd)
 SSD_COUNT=$(find /dev/ | grep google-local-nvme-ssd | wc -l)
-SSD_NAME=$(basename $SSD_PATH)
+SSD_NAME=$(basename "$SSD_PATH")
 BUCKET_NAME=vaani-tts-master
 BUCKET_MOUNT_POINT=/mnt/gcs
 FAST_STORAGE_MOUNT_POINT=/mnt/ssd
@@ -9,7 +9,14 @@ sudo mkdir -p $BUCKET_MOUNT_POINT
 sudo mkdir -p $FAST_STORAGE_MOUNT_POINT
 sudo chmod -R 777 $BUCKET_MOUNT_POINT
 sudo chmod -R 777 $FAST_STORAGE_MOUNT_POINT
-echo $SSD_NAME
+echo "$SSD_NAME"
+
+setup() {
+  sudo mkdir -p $BUCKET_MOUNT_POINT
+  sudo mkdir -p $FAST_STORAGE_MOUNT_POINT
+  sudo chmod -R 777 $BUCKET_MOUNT_POINT
+  sudo chmod -R 777 $FAST_STORAGE_MOUNT_POINT
+}
 
 mount_ssd() {
   sudo apt update
