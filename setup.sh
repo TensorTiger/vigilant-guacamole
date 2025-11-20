@@ -19,6 +19,16 @@ setup() {
       echo "Skipping unmount of $BUCKET_MOUNT_POINT"
     fi
   fi
+  if [ ! -d "$BUCKET_MOUNT_POINT" ]; then
+    mkdir -p $BUCKET_MOUNT_POINT
+    chmod -R 777 $BUCKET_MOUNT_POINT
+  fi
+  if [ ! -d "$FAST_STORAGE_MOUNT_POINT" ]; then
+    sudo mkdir -p $FAST_STORAGE_MOUNT_POINT
+    sudo chmod -R 777 $FAST_STORAGE_MOUNT_POINT
+    else
+      echo "Skipping unmount of $BUCKET_MOUNT_POINT"
+  fi
   if [ -d "$FAST_STORAGE_MOUNT_POINT" ]; then
     read -p "Warning: This will unmount and remove $FAST_STORAGE_MOUNT_POINT. Continue? (y/N): " -n 1 -r
     echo
@@ -51,6 +61,10 @@ mount_ssd() {
 
 mount_gcs() {
   # Mount the GCS bucket
+  if [ ! -d "$BUCKET_MOUNT_POINT" ]; then
+    mkdir -p $BUCKET_MOUNT_POINT
+    chmod -R 777 $BUCKET_MOUNT_POINT
+  fi
   gcsfuse --metadata-cache-ttl-secs=-1 \
     --stat-cache-max-size-mb=-1 \
     --type-cache-max-size-mb=-1 \
@@ -93,10 +107,10 @@ symlink_drives() {
     rm $HOME/space
     ln -s $FAST_STORAGE_MOUNT_POINT $HOME/space
   fi
-
 }
 
 first_time_setup() {
+  setup
   install_gcsfuse
   install_uv
   mount_ssd
