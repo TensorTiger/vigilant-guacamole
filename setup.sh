@@ -114,3 +114,16 @@ setup_other_user() {
   mount_gcs
   symlink_drives
 }
+
+
+read -p "Do you want to perform a (1) first time setup, (2) resume setup, or (3) setup for another user? (1/2/3): " -n 1 -r
+echo
+if [[ $REPLY =~ ^[1]$ ]]; then
+  first_time_setup
+elif [[ $REPLY =~ ^[2]$ ]]; then
+  resume_setup
+elif [[ $REPLY =~ ^[3]$ ]]; then
+  setup_other_user
+else
+  echo "Invalid option selected."
+fi
